@@ -6,38 +6,35 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 
 function updateBookingStatusBulk() {
-    $selectQuery = "SELECT `booking_id`, `link_id`, `booking_status` FROM `booking_order` WHERE `booking_status` = ?";
-    $pendingStatus = 'pending';
+    // Prepare the query to fetch only pending booking orders
+    $query = "SELECT link_id, booking_id FROM booking_order WHERE booking_status = 'pending'";
     
-    $bookingOrders = select($selectQuery, [$pendingStatus], 's');
+    // Fetch the booking orders using the select function
+    $bookingOrders = select1($query, [], ''); // No values or datatypes needed for this query
 
-    // echo '<pre>';
-    // echo htmlspecialchars(print_r($bookingOrders, true)); // Safely output the response data
-    // echo '</pre>';
-    
     if (mysqli_num_rows($bookingOrders) === 0) {
-        // die('No pending booking orders found');
+        echo 'No pending booking orders found.';
+        return;
     }
 
     while ($bookingOrder = mysqli_fetch_assoc($bookingOrders)) {
-        $linkId = $bookingOrder['link_id']; 
+        $linkId = $bookingOrder['link_id'];
         $bookingId = $bookingOrder['booking_id'];
 
-        $paymongoData = getPaymongoPaymentData($linkId); 
+        $paymongoData = getPaymongoPaymentData($linkId);
 
         if ($paymongoData && isset($paymongoData['data']['attributes']['status'])) {
             $paymongoStatus = $paymongoData['data']['attributes']['status'];
 
-          
             if ($paymongoStatus === 'paid') {
-                $updateQuery = "UPDATE `booking_order` SET `booking_status` = 'booked' WHERE `link_id` = ?";
-                update($updateQuery, [$linkId], 's');
-                // echo "Booking order with link_id $linkId has been updated to 'booked' status.<br>";
+                $updateQuery = "UPDATE booking_order SET booking_status = 'booked' WHERE link_id = ?";
+                update($updateQuery, [$linkId], 's'); // Using your update function
+                echo "Booking order with link_id $linkId has been updated to 'booked' status.\n";
             } else {
-                // echo "Booking order with link_id $linkId has not been paid yet. Status: $paymongoStatus.<br>";
+                echo "Booking order with link_id $linkId has not been paid yet. Status: $paymongoStatus.\n";
             }
         } else {
-            echo "Error: Could not retrieve payment status for link_id $linkId.<br>";
+            echo "Error: Could not retrieve payment status for link_id $linkId.\n";
         }
     }
 }
@@ -46,7 +43,6 @@ function getPaymongoPaymentData($linkId) {
     $paymongoApiKey = 'sk_test_72MbdmpCmG9hYTN74LvC6bBJ';  
     $url = "https://api.paymongo.com/v1/links/$linkId";
     
-    // Create a Guzzle client
     $client = new Client();
 
     try {
@@ -62,7 +58,7 @@ function getPaymongoPaymentData($linkId) {
         if (isset($responseData['data'])) {
             return $responseData;  
         } else {
-            echo "Error: Invalid response from Paymongo API.";
+            echo "Error: Invalid response from Paymongo API for link_id $linkId.";
             return null;
         }
     } catch (RequestException $e) {
@@ -77,3 +73,4 @@ function getPaymongoPaymentData($linkId) {
 }
 
 updateBookingStatusBulk();
+?>

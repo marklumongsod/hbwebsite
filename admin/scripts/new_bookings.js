@@ -21,7 +21,6 @@ assign_room_form.addEventListener('submit',function(e){
   e.preventDefault();
   
   let data = new FormData();
-  data.append('room_no',assign_room_form.elements['room_no'].value);
   data.append('booking_id',assign_room_form.elements['booking_id'].value);
   data.append('assign_room','');
 

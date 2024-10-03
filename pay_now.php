@@ -3,6 +3,7 @@ require('admin/inc/db_config.php');
 require('admin/inc/essentials.php');
 require 'vendor/autoload.php';
 
+
 use GuzzleHttp\Client;
 
 date_default_timezone_set("Asia/Kolkata");
@@ -37,9 +38,6 @@ if (isset($_POST['pay_now'])) {
         $CUST_ID = $_SESSION['uId'];
         $price_rate = $frm_data['price_rate'];
         $TXN_AMOUNT = $price_rate * 100;
-
-        // Rest of your existing code for processing the booking
-        // ...
 
         if (!isset($_SESSION['room']) || empty($_SESSION['room']['id'])) {
             echo "Error: Room data is not available.";

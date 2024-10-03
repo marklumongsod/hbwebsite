@@ -46,8 +46,9 @@
         while($data = mysqli_fetch_assoc($result))
         {
           $date = date("d-m-Y",strtotime($data['datentime']));
-          $checkin = date("d-m-Y",strtotime($data['check_in']));
-          $checkout = date("d-m-Y",strtotime($data['check_out']));
+          $checkin = date("d-m-Y",strtotime($data['check_in_date']));
+          $checkin_time = $data['check_in_time'];
+          $checkin_time_12hr = date("g:i A", strtotime($checkin_time));
 
           $status_bg = "";
           $btn = "";
@@ -88,10 +89,10 @@
             <div class='col-md-4 px-4 mb-4'>
               <div class='bg-white p-3 rounded shadow-sm'>
                 <h5 class='fw-bold'>$data[room_name]</h5>
-                <p>₱$data[price] per night</p>
+                <p>₱$data[price]</p>
                 <p>
-                  <b>Check in: </b> $checkin <br>
-                  <b>Check out: </b> $checkout
+                  <b>Check-in-date: </b> $checkin <br>
+                  <b>Check-in-time: </b> $checkin_time_12hr
                 </p>
                 <p>
                   <b>Amount: </b> ₱$data[price] <br>

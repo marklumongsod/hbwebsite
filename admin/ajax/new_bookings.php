@@ -26,8 +26,10 @@
     while($data = mysqli_fetch_assoc($res))
     {
       $date = date("d-m-Y",strtotime($data['datentime']));
-      $checkin = date("d-m-Y",strtotime($data['check_in']));
-      $checkout = date("d-m-Y",strtotime($data['check_out']));
+      $checkin = date("d-m-Y",strtotime($data['check_in_date']));
+      $checkin_time = $data['check_in_time']; // Assume this is in 24-hour format, e.g., "14:30:00"
+      $checkin_time_12hr = date("g:i A", strtotime($checkin_time));
+
 
       $table_data .="
         <tr>
@@ -44,20 +46,21 @@
           <td>
             <b>Room:</b> $data[room_name]
             <br>
+            <b>Room No:</b> $data[room_no]
+            <br>
             <b>Price:</b> ₱$data[price]
           </td>
           <td>
-            <b>Check-in:</b> $checkin
+            <b>Check-in-date:</b> $checkin
             <br>
-            <b>Check-out:</b> $checkout
+            <b>Check-in-time:</b> $checkin_time_12hr
             <br>
             <b>Paid:</b> ₱$data[trans_amt]
             <br>
-            <b>Date:</b> $date
           </td>
           <td>
             <button type='button' onclick='assign_room($data[booking_id])' class='btn text-white btn-sm fw-bold custom-bg shadow-none' data-bs-toggle='modal' data-bs-target='#assign-room'>
-              <i class='bi bi-check2-square'></i> Assign Room
+              <i class='bi bi-check2-square'></i> Confirm Arrival
             </button>
             <br>
             <button type='button' onclick='cancel_booking($data[booking_id])' class='mt-2 btn btn-outline-danger btn-sm fw-bold shadow-none'>
@@ -79,12 +82,12 @@
 
     $query = "UPDATE `booking_order` bo INNER JOIN `booking_details` bd
       ON bo.booking_id = bd.booking_id
-      SET bo.arrival = ?, bo.rate_review = ?, bd.room_no = ? 
+      SET bo.arrival = ?, bo.rate_review = ? 
       WHERE bo.booking_id = ?";
 
-    $values = [1,0,$frm_data['room_no'],$frm_data['booking_id']];
+    $values = [1,0,$frm_data['booking_id']];
 
-    $res = update($query,$values,'iisi'); // it will update 2 rows so it will return 2
+    $res = update($query,$values,'iii'); // it will update 2 rows so it will return 2
 
     echo ($res==2) ? 1 : 0;
   }
