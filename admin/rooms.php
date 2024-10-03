@@ -1,10 +1,11 @@
 <?php
-  require('inc/essentials.php');
-  require('inc/db_config.php');
-  adminLogin();
+require('inc/essentials.php');
+require('inc/db_config.php');
+adminLogin();
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +13,7 @@
   <title>Admin Panel - Rooms</title>
   <?php require('inc/links.php'); ?>
 </head>
+
 <body class="bg-light">
 
   <?php require('inc/header.php'); ?>
@@ -36,15 +38,17 @@
                   <tr class="bg-dark text-light">
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Area</th>
-                    <th scope="col">Guests</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Quantity</th>
+                    <th scope="col">Room No</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">3hrs Rate</th>
+                    <th scope="col">6hrs Rate</th>
+                    <th scope="col">12hrs Rate</th>
+                    <th scope="col">Availability</th>
                     <th scope="col">Status</th>
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody id="room-data">                 
+                <tbody id="room-data">
                 </tbody>
               </table>
             </div>
@@ -55,7 +59,7 @@
       </div>
     </div>
   </div>
-  
+
 
   <!-- Add room modal -->
 
@@ -73,64 +77,24 @@
                 <input type="text" name="name" class="form-control shadow-none" required>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Area</label>
-                <input type="number" min="1" name="area" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Price</label>
-                <input type="number" min="1" name="price" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Quantity</label>
-                <input type="number" min="1" name="quantity" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Adult (Max.)</label>
-                <input type="number" min="1" name="adult" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Children (Max.)</label>
-                <input type="number" min="1" name="children" class="form-control shadow-none" required>
-              </div>
-              <div class="col-12 mb-3">
-                <label class="form-label fw-bold">Features</label>
-                <div class="row">
-                  <?php 
-                    $res = selectAll('features');
-                    while($opt = mysqli_fetch_assoc($res)){
-                      echo"
-                        <div class='col-md-3 mb-1'>
-                          <label>
-                            <input type='checkbox' name='features' value='$opt[id]' class='form-check-input shadow-none'>
-                            $opt[name]
-                          </label>
-                        </div>
-                      ";
-                    }
-                  ?>
-                </div>
-              </div>
-              <div class="col-12 mb-3">
-                <label class="form-label fw-bold">Facilities</label>
-                <div class="row">
-                  <?php 
-                    $res = selectAll('facilities');
-                    while($opt = mysqli_fetch_assoc($res)){
-                      echo"
-                        <div class='col-md-3 mb-1'>
-                          <label>
-                            <input type='checkbox' name='facilities' value='$opt[id]' class='form-check-input shadow-none'>
-                            $opt[name]
-                          </label>
-                        </div>
-                      ";
-                    }
-                  ?>
-                </div>
+                <label class="form-label fw-bold">Room No.</label>
+                <input type="number" min="1" name="room_no" class="form-control shadow-none" required>
               </div>
               <div class="col-12 mb-3">
                 <label class="form-label fw-bold">Description</label>
-                <textarea name="desc" rows="4" class="form-control shadow-none" required></textarea>
+                <textarea name="description" rows="4" class="form-control shadow-none" required></textarea>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">3hrs Rate</label>
+                <input type="number" min="1" name="rate_3hrs" class="form-control shadow-none" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">6hrs Rate</label>
+                <input type="number" min="1" name="rate_6hrs" class="form-control shadow-none" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">12hrs Rate</label>
+                <input type="number" min="1" name="rate_12hrs" class="form-control shadow-none" required>
               </div>
             </div>
           </div>
@@ -140,6 +104,7 @@
           </div>
         </div>
       </form>
+
     </div>
   </div>
 
@@ -153,70 +118,30 @@
             <h5 class="modal-title">Edit Room</h5>
           </div>
           <div class="modal-body">
-            <div class="row">
+          <div class="row">
               <div class="col-md-6 mb-3">
                 <label class="form-label fw-bold">Name</label>
                 <input type="text" name="name" class="form-control shadow-none" required>
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Area</label>
-                <input type="number" min="1" name="area" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Price</label>
-                <input type="number" min="1" name="price" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Quantity</label>
-                <input type="number" min="1" name="quantity" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Adult (Max.)</label>
-                <input type="number" min="1" name="adult" class="form-control shadow-none" required>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label class="form-label fw-bold">Children (Max.)</label>
-                <input type="number" min="1" name="children" class="form-control shadow-none" required>
-              </div>
-              <div class="col-12 mb-3">
-                <label class="form-label fw-bold">Features</label>
-                <div class="row">
-                  <?php 
-                    $res = selectAll('features');
-                    while($opt = mysqli_fetch_assoc($res)){
-                      echo"
-                        <div class='col-md-3 mb-1'>
-                          <label>
-                            <input type='checkbox' name='features' value='$opt[id]' class='form-check-input shadow-none'>
-                            $opt[name]
-                          </label>
-                        </div>
-                      ";
-                    }
-                  ?>
-                </div>
-              </div>
-              <div class="col-12 mb-3">
-                <label class="form-label fw-bold">Facilities</label>
-                <div class="row">
-                  <?php 
-                    $res = selectAll('facilities');
-                    while($opt = mysqli_fetch_assoc($res)){
-                      echo"
-                        <div class='col-md-3 mb-1'>
-                          <label>
-                            <input type='checkbox' name='facilities' value='$opt[id]' class='form-check-input shadow-none'>
-                            $opt[name]
-                          </label>
-                        </div>
-                      ";
-                    }
-                  ?>
-                </div>
+                <label class="form-label fw-bold">Room No.</label>
+                <input type="number" min="1" name="room_no" class="form-control shadow-none" required>
               </div>
               <div class="col-12 mb-3">
                 <label class="form-label fw-bold">Description</label>
-                <textarea name="desc" rows="4" class="form-control shadow-none" required></textarea>
+                <textarea name="description" rows="4" class="form-control shadow-none" required></textarea>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">3hrs Rate</label>
+                <input type="number" min="1" name="rate_3hrs" class="form-control shadow-none" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">6hrs Rate</label>
+                <input type="number" min="1" name="rate_6hrs" class="form-control shadow-none" required>
+              </div>
+              <div class="col-md-4 mb-3">
+                <label class="form-label fw-bold">12hrs Rate</label>
+                <input type="number" min="1" name="rate_12hrs" class="form-control shadow-none" required>
               </div>
               <input type="hidden" name="room_id">
             </div>
@@ -258,7 +183,7 @@
                   <th scope="col">Delete</th>
                 </tr>
               </thead>
-              <tbody id="room-image-data">                 
+              <tbody id="room-image-data">
               </tbody>
             </table>
           </div>
@@ -273,4 +198,5 @@
   <script src="scripts/rooms.js"></script>
 
 </body>
+
 </html>
