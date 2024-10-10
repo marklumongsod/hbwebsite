@@ -5,16 +5,18 @@ require('admin/inc/essentials.php');
 
 date_default_timezone_set("Asia/Manila");
 
-// Get the current date and time
 $current_date = date("Y-m-d");
 $current_time = date("H:i:s");
 
 $current_datetime = new DateTime($current_date . ' ' . $current_time);
 $current_timestamp = $current_datetime->getTimestamp();
 
-$query = "SELECT * FROM booking_details";
+$query = "SELECT bd.*, bo.booking_status 
+          FROM booking_details bd
+          JOIN booking_order bo ON bd.booking_id = bo.booking_id
+          WHERE bo.booking_status = 'booked'";
 
-$result = select1($query, [], ''); // Pass empty array for values and empty string for datatypes
+$result = select1($query, [], ''); 
 
 if ($result && mysqli_num_rows($result) > 0) {
     while ($booking = mysqli_fetch_assoc($result)) {
@@ -37,6 +39,7 @@ if ($result && mysqli_num_rows($result) > 0) {
         echo "Check-in time: " . $check_in_datetime->format('Y-m-d H:i:s') . " (Timestamp checkin: $check_in_timestamp)<br>";
         echo "Check-out time: " . $check_out_datetime->format('Y-m-d H:i:s') . " (Timestamp checkout: $check_out_timestamp)<br>";
 
+        // Update room availability based on the current time and booking status
         if ($current_timestamp >= $check_in_timestamp && $current_timestamp < $check_out_timestamp) {
             $update_query = "UPDATE rooms SET isAvailable = 0 WHERE name = ? AND room_no = ? AND removed = ?";
             if (insert($update_query, [$room_name, $room_no, 0], 'ssi')) {
@@ -58,6 +61,6 @@ if ($result && mysqli_num_rows($result) > 0) {
         echo "<hr>"; 
     }
 } else {
-    echo "No booking details found.";
+    echo "No booking details found with 'booked' status.";
 }
 ?>

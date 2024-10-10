@@ -18,6 +18,7 @@ class ComposerStaticInit6fe4f83bc0654a6068e53f95db0bb777
             'Psr\\Http\\Message\\' => 17,
             'Psr\\Http\\Client\\' => 16,
             'Paymongo\\' => 9,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -30,8 +31,8 @@ class ComposerStaticInit6fe4f83bc0654a6068e53f95db0bb777
     public static $prefixDirsPsr4 = array (
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -40,6 +41,10 @@ class ComposerStaticInit6fe4f83bc0654a6068e53f95db0bb777
         'Paymongo\\' => 
         array (
             0 => __DIR__ . '/..' . '/paymongo/paymongo-php/src',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (

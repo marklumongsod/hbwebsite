@@ -151,7 +151,7 @@ function createPaymentLink($amount, $orderId)
             'body' => $payload,
             'headers' => [
                 'accept' => 'application/json',
-                'authorization' => 'Basic ' . base64_encode('sk_test_72MbdmpCmG9hYTN74LvC6bBJ'),
+                'authorization' => 'Basic ' . base64_encode('sk_test_Kn8SLEjoKT6QSBWfJYAmxJ4P'),
                 'content-type' => 'application/json',
             ],
         ]);

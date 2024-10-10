@@ -1,37 +1,35 @@
-<?php 
+<?php
 
-  require('../inc/db_config.php');
-  require('../inc/essentials.php');
-  adminLogin();
+require('../inc/db_config.php');
+require('../inc/essentials.php');
+adminLogin();
 
-  if(isset($_POST['get_bookings']))
-  {
-    $frm_data = filteration($_POST);
+if (isset($_POST['get_bookings'])) {
+  $frm_data = filteration($_POST);
 
-    $query = "SELECT bo.*, bd.* FROM `booking_order` bo
+  $query = "SELECT bo.*, bd.* FROM `booking_order` bo
       INNER JOIN `booking_details` bd ON bo.booking_id = bd.booking_id
       WHERE (bo.order_id LIKE ? OR bd.phonenum LIKE ? OR bd.user_name LIKE ?) 
       AND (bo.booking_status=? AND bo.arrival=?) ORDER BY bo.booking_id ASC";
 
-    $res = select($query,["%$frm_data[search]%","%$frm_data[search]%","%$frm_data[search]%","booked",0],'sssss');
-    
-    $i=1;
-    $table_data = "";
+  $res = select($query, ["%$frm_data[search]%", "%$frm_data[search]%", "%$frm_data[search]%", "booked", 0], 'sssss');
 
-    if(mysqli_num_rows($res)==0){
-      echo"<b>No Data Found!</b>";
-      exit;
-    }
+  $i = 1;
+  $table_data = "";
 
-    while($data = mysqli_fetch_assoc($res))
-    {
-      $date = date("d-m-Y",strtotime($data['datentime']));
-      $checkin = date("d-m-Y",strtotime($data['check_in_date']));
-      $checkin_time = $data['check_in_time']; // Assume this is in 24-hour format, e.g., "14:30:00"
-      $checkin_time_12hr = date("g:i A", strtotime($checkin_time));
+  if (mysqli_num_rows($res) == 0) {
+    echo "<b>No Data Found!</b>";
+    exit;
+  }
+
+  while ($data = mysqli_fetch_assoc($res)) {
+    $date = date("d-m-Y", strtotime($data['datentime']));
+    $checkin = date("d-m-Y", strtotime($data['check_in_date']));
+    $checkin_time = $data['check_in_time']; // Assume this is in 24-hour format, e.g., "14:30:00"
+    $checkin_time_12hr = date("g:i A", strtotime($checkin_time));
 
 
-      $table_data .="
+    $table_data .= "
         <tr>
           <td>$i</td>
           <td>
@@ -70,37 +68,53 @@
         </tr>
       ";
 
-      $i++;
-    }
-
-    echo $table_data;
+    $i++;
   }
 
-  if(isset($_POST['assign_room']))
-  {
-    $frm_data = filteration($_POST);
+  echo $table_data;
+}
 
-    $query = "UPDATE `booking_order` bo INNER JOIN `booking_details` bd
+if (isset($_POST['assign_room'])) {
+  $frm_data = filteration($_POST);
+
+  $query = "UPDATE `booking_order` bo INNER JOIN `booking_details` bd
       ON bo.booking_id = bd.booking_id
       SET bo.arrival = ?, bo.rate_review = ? 
       WHERE bo.booking_id = ?";
 
-    $values = [1,0,$frm_data['booking_id']];
+  $values = [1, 0, $frm_data['booking_id']];
 
-    $res = update($query,$values,'iii'); // it will update 2 rows so it will return 2
+  $res = update($query, $values, 'iii'); // it will update 2 rows so it will return 2
 
-    echo ($res==2) ? 1 : 0;
+  echo ($res == 2) ? 1 : 0;
+}
+
+if (isset($_POST['cancel_booking'])) {
+  $frm_data = filteration($_POST);
+
+  $query = "UPDATE `booking_order` SET `booking_status`=?, `refund`=? WHERE `booking_id`=?";
+  $values = ['cancelled', 0, $frm_data['booking_id']];
+  $res = update($query, $values, 'sii');
+
+  if ($res) {
+    $fetch_room_query = "SELECT `room_id` FROM `booking_order` WHERE `booking_id`=?";
+    $room_data = select($fetch_room_query, [$frm_data['booking_id']], 'i');
+
+    if ($room_data) {
+      $room_id = $room_data[0]['room_id'];
+
+      $update_room_query = "UPDATE `room` SET `isAvailable`=? WHERE `id`=?";
+      $room_update_res = update($update_room_query, [1, $room_id], 'ii');
+
+      if ($room_update_res) {
+        echo "Room availability updated successfully.";
+      } else {
+        echo "Failed to update room availability.";
+      }
+    } else {
+      echo "Room not found for the given booking.";
+    }
+  } else {
+    echo "Failed to cancel the booking.";
   }
-
-  if(isset($_POST['cancel_booking']))
-  {
-    $frm_data = filteration($_POST);
-    
-    $query = "UPDATE `booking_order` SET `booking_status`=?, `refund`=? WHERE `booking_id`=?";
-    $values = ['cancelled',0,$frm_data['booking_id']];
-    $res = update($query,$values,'sii');
-
-    echo $res;
-  }
-
-?>
+}

@@ -1,6 +1,7 @@
 <?php
 // require_once ('check_paymongo_payments.php');
 // updateBookingStatusBulk();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -10,6 +11,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css">
+  <link rel="stylesheet" href="style.css">
   <?php require_once('inc/links.php'); ?>
   <title><?php echo $settings_r['site_title'] ?> - HOME</title>
   <style>
@@ -28,7 +30,7 @@
   </style>
 </head>
 
-<body class="bg-light">
+<body style="background-color: bisque;">
 
   <?php require_once('inc/header.php'); ?>
 
@@ -52,55 +54,6 @@
     </div>
   </div>
 
-  <!-- check availability form -->
-
-  <div class="container availability-form">
-    <div class="row">
-      <div class="col-lg-12 bg-white shadow p-4 rounded">
-        <h5 class="mb-4">Check Booking Availability</h5>
-        <form action="rooms.php">
-          <div class="row align-items-end">
-            <div class="col-lg-3 mb-3">
-              <label class="form-label" style="font-weight: 500;">Check-in</label>
-              <input type="date" class="form-control shadow-none" name="checkin" required>
-            </div>
-            <div class="col-lg-3 mb-3">
-              <label class="form-label" style="font-weight: 500;">Check-out</label>
-              <input type="date" class="form-control shadow-none" name="checkout" required>
-            </div>
-            <div class="col-lg-3 mb-3">
-              <label class="form-label" style="font-weight: 500;">Adult</label>
-              <select class="form-select shadow-none" name="adult">
-                <?php
-                $guests_q = mysqli_query($con, "SELECT MAX(adult) AS `max_adult`, MAX(children) AS `max_children` 
-                    FROM `rooms` WHERE `status`='1' AND `removed`='0'");
-                $guests_res = mysqli_fetch_assoc($guests_q);
-
-                for ($i = 1; $i <= $guests_res['max_adult']; $i++) {
-                  echo "<option value='$i'>$i</option>";
-                }
-                ?>
-              </select>
-            </div>
-            <div class="col-lg-2 mb-3">
-              <label class="form-label" style="font-weight: 500;">Children</label>
-              <select class="form-select shadow-none" name="children">
-                <?php
-                for ($i = 1; $i <= $guests_res['max_children']; $i++) {
-                  echo "<option value='$i'>$i</option>";
-                }
-                ?>
-              </select>
-            </div>
-            <input type="hidden" name="check_availability">
-            <div class="col-lg-1 mb-lg-3 mt-2">
-              <button type="submit" class="btn text-white shadow-none custom-bg">Submit</button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
 
   <!-- Our Rooms -->
 
@@ -236,83 +189,6 @@
     </div>
   </div>
 
-  <!-- Our Facilities -->
-
-  <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR FACILITIES</h2>
-
-  <div class="container">
-    <div class="row justify-content-evenly px-lg-0 px-md-0 px-5">
-      <?php
-      $res = mysqli_query($con, "SELECT * FROM `facilities` ORDER BY `id` DESC LIMIT 5");
-      $path = FACILITIES_IMG_PATH;
-
-      while ($row = mysqli_fetch_assoc($res)) {
-        echo <<<data
-            <div class="col-lg-2 col-md-2 text-center bg-white rounded shadow py-4 my-3">
-              <img src="$path$row[icon]" width="60px">
-              <h5 class="mt-3">$row[name]</h5>
-            </div>
-          data;
-      }
-      ?>
-
-      <div class="col-lg-12 text-center mt-5">
-        <a href="facilities.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">More Facilities >>></a>
-      </div>
-    </div>
-  </div>
-
-  <!-- Testimonials -->
-
-  <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">TESTIMONIALS</h2>
-
-  <div class="container mt-5">
-    <div class="swiper swiper-testimonials">
-      <div class="swiper-wrapper mb-5">
-        <?php
-
-        $review_q = "SELECT rr.*,uc.name AS uname, uc.profile, r.name AS rname FROM `rating_review` rr
-            INNER JOIN `user_cred` uc ON rr.user_id = uc.id
-            INNER JOIN `rooms` r ON rr.room_id = r.id
-            ORDER BY `sr_no` DESC LIMIT 6";
-
-        $review_res = mysqli_query($con, $review_q);
-        $img_path = USERS_IMG_PATH;
-
-        if (mysqli_num_rows($review_res) == 0) {
-          echo 'No reviews yet!';
-        } else {
-          while ($row = mysqli_fetch_assoc($review_res)) {
-            $stars = "<i class='bi bi-star-fill text-warning'></i> ";
-            for ($i = 1; $i < $row['rating']; $i++) {
-              $stars .= " <i class='bi bi-star-fill text-warning'></i>";
-            }
-
-            echo <<<slides
-                <div class="swiper-slide bg-white p-4">
-                  <div class="profile d-flex align-items-center mb-3">
-                    <img src="$img_path$row[profile]" class="rounded-circle" loading="lazy" width="30px">
-                    <h6 class="m-0 ms-2">$row[uname]</h6>
-                  </div>
-                  <p>
-                    $row[review]
-                  </p>
-                  <div class="rating">
-                    $stars
-                  </div>
-                </div>
-              slides;
-          }
-        }
-
-        ?>
-      </div>
-      <div class="swiper-pagination"></div>
-    </div>
-    <div class="col-lg-12 text-center mt-5">
-      <a href="about.php" class="btn btn-sm btn-outline-dark rounded-0 fw-bold shadow-none">Know More >>></a>
-    </div>
-  </div>
 
   <!-- Reach us -->
 
@@ -514,6 +390,7 @@
       xhr.send(data);
     });
   </script>
+
 
 </body>
 
