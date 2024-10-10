@@ -31,7 +31,7 @@ function updateBookingStatusBulk()
         if ($paymongoData && isset($paymongoData['data']['attributes']['status'])) {
             $paymongoStatus = $paymongoData['data']['attributes']['status'];
             $paymongoClientName = $paymongoData['data']['attributes']['payments'][0]['data']['attributes']['billing']['name'];
-            $amount = $paymongoData['data']['attributes']['reference_number'];
+            $amount = $paymongoData['data']['attributes']['amount'] / 100;
             $currency = $paymongoData['data']['attributes']['currency'];
             $description = $paymongoData['data']['attributes']['description'];
 
@@ -40,7 +40,7 @@ function updateBookingStatusBulk()
             $adminEmail = null;
             if (mysqli_num_rows($result) > 0) {
                 $row = $result->fetch_assoc();
-                $adminEmail = htmlspecialchars($row['email']); // Ensure to sanitize the output
+                $adminEmail = htmlspecialchars($row['email']); 
             }
 
             if ($paymongoStatus === 'paid') {
@@ -116,7 +116,7 @@ function sendMail($recipientEmail, $paymongoClientName, $amount, $currency, $des
                             <ul>
                                 <li><strong>Booking ID:</strong> ' . htmlspecialchars($linkId) . '</li>
                                 <li><strong>Client Name:</strong> ' . htmlspecialchars($paymongoClientName) . '</li>
-                                <li><strong>Reference No:</strong> ' . htmlspecialchars($amount) . ' ' . htmlspecialchars($currency) . '</li>
+                                <li><strong>Paid Amount:</strong> ' . htmlspecialchars($currency) . ' ' . htmlspecialchars($amount) . '</li>
                                 <li><strong>Transaction Description:</strong> ' . htmlspecialchars($description) . '</li>
                                 <li><strong>Status:</strong> ' . htmlspecialchars($paymentStatus) . '</li>
                             </ul>

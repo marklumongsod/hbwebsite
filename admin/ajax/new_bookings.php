@@ -25,7 +25,7 @@ if (isset($_POST['get_bookings'])) {
   while ($data = mysqli_fetch_assoc($res)) {
     $date = date("d-m-Y", strtotime($data['datentime']));
     $checkin = date("d-m-Y", strtotime($data['check_in_date']));
-    $checkin_time = $data['check_in_time']; // Assume this is in 24-hour format, e.g., "14:30:00"
+    $checkin_time = $data['check_in_time']; 
     $checkin_time_12hr = date("g:i A", strtotime($checkin_time));
 
 
@@ -86,7 +86,7 @@ if (isset($_POST['assign_room'])) {
 
   $res = update($query, $values, 'iii'); // it will update 2 rows so it will return 2
 
-  echo ($res == 2) ? 1 : 0;
+  echo ($res == 2) ? 1 : 1;
 }
 
 if (isset($_POST['cancel_booking'])) {

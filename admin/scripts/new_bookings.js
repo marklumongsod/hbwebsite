@@ -33,7 +33,7 @@ assign_room_form.addEventListener('submit',function(e){
     modal.hide();
 
     if(this.responseText==1){
-      alert('success','Room Number Alloted! Booking Finalized!');
+      alert('success','Booked Confirmed!');
       assign_room_form.reset();
       get_bookings();
     }
@@ -64,6 +64,7 @@ function cancel_booking(id)
       }
       else{
         alert('error','Server Down!');
+        get_bookings();
       }
     }
 

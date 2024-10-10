@@ -70,7 +70,7 @@ adminLogin();
           <div class="modal-body">
             <div class="mb-3">
               <!-- <label class="form-label fw-bold">Room Number</label> -->
-              <input type="text" name="room_no" class="form-control shadow-none" hidden>
+              <!-- <input type="text" name="room_no" class="form-control shadow-none" hidden> -->
             </div>
               Please confirm the user's arrival by clicking the button below. This action will finalize the booking process, ensuring all details are recorded accurately.
             <input type="hidden" name="booking_id">
