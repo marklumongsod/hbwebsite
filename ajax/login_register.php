@@ -11,7 +11,7 @@ use PHPMailer\PHPMailer\Exception;
 
 date_default_timezone_set("Asia/Manila");
 
-function send_mail($uemail, $type)
+function send_mail($uemail, $type, $token)
 {
   $mail = new PHPMailer(true);
 
@@ -29,39 +29,27 @@ function send_mail($uemail, $type)
 
     if ($type == "email_confirmation") {
       $subject = "Account Verification";
+      $verificationLink = "http://localhost/hbwebsite/ajax/verify.php?token=" . $token;  
       $content = "
                 <h1>Thank you for registering with us!</h1>
                 <p>Please verify your email address to complete your registration.</p>
-                <a href='http://localhost/hbwebsite/index.php' style='
+                <a href='" . $verificationLink . "' style='
                     display: inline-block; 
                     padding: 10px 20px; 
                     margin: 20px 0; 
                     background-color: #28a745; 
                     color: white; 
                     text-decoration: none; 
-                    border-radius: 5px;'>
+                    border-radius: 5px;' >
                     Verify Email
                 </a>
                 <p>If the button above does not work, please copy and paste the following URL into your browser:</p>
-                <p><a href='http://localhost/hbwebsite/index.php'>http://localhost/hbwebsite/index.php</a></p>
+                <p><a href='" . $verificationLink . "'>" . $verificationLink . "</a></p>
             ";
     } else {
-      $subject = "Account Reset Request";
-      $content = "
-                <h1>Password Reset Request</h1>
-                <p>Click the button below to reset your account password.</p>
-                <a href='http://localhost/hbwebsite/index.php' style='
-                    display: inline-block; 
-                    padding: 10px 20px; 
-                    margin: 20px 0; 
-                    background-color: #007bff; 
-                    color: white; 
-                    text-decoration: none; 
-                    border-radius: 5px;'>
-                    Reset Password
-                </a>
-            ";
+      // Handle other email types
     }
+
     $mail->isHTML(true);
     $mail->Subject = $subject;
     $mail->Body = $content;
@@ -73,6 +61,7 @@ function send_mail($uemail, $type)
     return 0;
   }
 }
+
 
 
 if (isset($_POST['register'])) {
@@ -106,19 +95,22 @@ if (isset($_POST['register'])) {
 
   $enc_pass = password_hash($data['pass'], PASSWORD_BCRYPT);
 
-  $query = "INSERT INTO `user_cred`(`name`, `email`, `address`, `phonenum`, `pincode`, `dob`, `profile`, `password`,  `is_verified`) VALUES (?,?,?,?,?,?,?,?, 1)";
-  $values = [$data['name'], $data['email'], $data['address'], $data['phonenum'], $data['pincode'], $data['dob'], $img, $enc_pass];
+  $token = bin2hex(random_bytes(16));  // Generate a random token
 
-  if (insert($query, $values, 'ssssssss')) {
-    if (send_mail($data['email'], "email_confirmation")) {
-      echo 1;
-    } else {
-      error_log("Failed to send confirmation email to " . $data['email']);
-      echo 1;
-    }
+  $query = "INSERT INTO `user_cred`(`name`, `email`, `address`, `phonenum`, `pincode`, `dob`, `profile`, `password`, `token`, `is_verified`) 
+            VALUES (?,?,?,?,?,?,?,?,?, 0)";
+  $values = [$data['name'], $data['email'], $data['address'], $data['phonenum'], $data['pincode'], $data['dob'], $img, $enc_pass, $token];
+  
+  if (insert($query, $values, 'sssssssss')) {
+      if (send_mail($data['email'], "email_confirmation", $token)) {  // Pass the token to the email function
+          echo 1;
+      } else {
+          error_log("Failed to send confirmation email to " . $data['email']);
+          echo 1;
+      }
   } else {
-    echo 'ins_failed';
-    error_log("Database insertion failed: " . mysqli_error($conn));
+      echo 'ins_failed';
+      error_log("Database insertion failed: " . mysqli_error($conn));
   }
 }
 

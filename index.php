@@ -189,6 +189,62 @@
     </div>
   </div>
 
+  <!-- OUR POOL -->
+
+  <h2 class="mt-5 pt-4 mb-4 text-center fw-bold h-font">OUR POOL</h2>
+
+<div class="container">
+    <div class="row">
+        <?php
+        // Fetch pools data from the database
+        $pool_res = select("SELECT * FROM `pools` WHERE `status`=? AND `removed` = ? ORDER BY `id` DESC LIMIT 3", [1, 0], 'ii');
+
+        while ($pool_data = mysqli_fetch_assoc($pool_res)) {
+            $pool_id = $pool_data['id'];
+            $pool_name = htmlspecialchars($pool_data['name'], ENT_QUOTES, 'UTF-8'); // Sanitize output
+            $pool_description = htmlspecialchars($pool_data['description'], ENT_QUOTES, 'UTF-8'); // Sanitize output
+            $pool_price = htmlspecialchars($pool_data['price'], ENT_QUOTES, 'UTF-8'); // Sanitize output
+            $is_available = $pool_data['status'] == 1;
+            $pool_status = $is_available ? 'Available' : 'Not Available';
+            $status_class = $is_available ? 'bg-success' : 'bg-danger'; // Status badge class
+
+            // Determine if booking button should be displayed
+            $book_btn = "";
+            if (!$settings_r['shutdown']) {
+                $login = 0;
+                if (isset($_SESSION['login']) && $_SESSION['login'] == true) {
+                    $login = 1;
+                }
+                $disabled = $is_available ? '' : 'disabled';
+                $book_btn = "<button onclick='checkLoginToBookPool($login,$pool_id)' class='btn btn-sm text-white custom-bg shadow-none' $disabled>Book Now</button>";
+            }
+
+            echo <<<data
+                <div class="col-lg-4 col-md-6 my-3">
+                    <div class="card border-0 shadow" style="max-width: 350px; margin: auto;">
+                        <div class="card-body">
+                            <h5>$pool_name</h5>
+                            <p>$pool_description</p>
+                            <h6 class="mb-4">₱$pool_price</h6>
+                            <div class="guests mb-4">
+                                <h6 class="mb-1">Status</h6>
+                                <span class="badge rounded-pill $status_class">$pool_status</span>
+                            </div>
+                            <div class="d-flex justify-content-evenly mb-2">
+                                $book_btn
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            data;
+        }
+        ?>
+    </div>
+</div>
+
+
+
+
 
   <!-- Reach us -->
 

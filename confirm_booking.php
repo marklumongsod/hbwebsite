@@ -138,8 +138,9 @@
                 </div>
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Check-in Date</label>
-                  <input name="checkin_date" type="date" class="form-control shadow-none" required>
+                  <input name="checkin_date" type="date" class="form-control shadow-none" required min="<?php echo date('Y-m-d'); ?>">
                 </div>
+
                 <div class="col-md-6 mb-3">
                   <label class="form-label">Check-in Time</label>
                   <input name="checkin_time" type="time" class="form-control shadow-none" required>

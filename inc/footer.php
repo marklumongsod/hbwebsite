@@ -235,6 +235,16 @@ register_form.addEventListener('submit', (e) => {
     }
   }
 
+  function checkLoginToBookPool(status,pool_id){
+    if(status){
+      window.location.href='confirm_booking_pool.php?id='+pool_id;
+    }
+    else{
+      alert('error','Please login to pool room!');
+    }
+  }
+
+
   setActive();
 
 </script>
