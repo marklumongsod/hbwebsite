@@ -14,14 +14,12 @@
     <?php require('inc/header.php'); ?>
 
     <?php
-    // Check if pool id is present in URL, and if shutdown mode is active or user is logged in
     if (!isset($_GET['id']) || $settings_r['shutdown'] == true) {
         redirect('pools.php');
     } else if (!(isset($_SESSION['login']) && $_SESSION['login'] == true)) {
         redirect('pools.php');
     }
 
-    // Filter and get pool and user data
     $data = filteration($_GET);
     $pool_res = select("SELECT * FROM `pools` WHERE `id`=? AND `status`=? AND `removed`=?", [$data['id'], 1, 0], 'iii');
 

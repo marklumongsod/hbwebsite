@@ -16,7 +16,6 @@ if (!(isset($_SESSION['login']) && $_SESSION['login'] == true)) {
 if (isset($_POST['pay_now'])) {
     $frm_data = filteration($_POST);
 
-    // Directly proceed to create a new booking
     $ORDER_ID = 'ORD_' . $_SESSION['uId'] . random_int(11111, 9999999);
     $CUST_ID = $_SESSION['uId'];
     $price_rate = $frm_data['price'];
@@ -29,7 +28,6 @@ if (isset($_POST['pay_now'])) {
 
     $pool_id = $_SESSION['pool']['id'];
 
-    // Insert into booking_order_pool table
     $query1 = "INSERT INTO `booking_order_pool`(`user_id`, `pool_id`, `check_in`, `check_in_time`, `order_id`, `booking_status`, `arrival`, `datentime`) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, NOW())";
     insert($query1, [
@@ -38,8 +36,8 @@ if (isset($_POST['pay_now'])) {
         $frm_data['checkin_date'], 
         $frm_data['checkin_time'], 
         $ORDER_ID,
-        'pending', // Assuming the initial booking status is 'pending'
-        $frm_data['quantity'] // Using quantity as arrival
+        'pending', 
+        $frm_data['quantity'] 
     ], 'issssii');
 
     $booking_id = mysqli_insert_id($con);
@@ -57,7 +55,7 @@ $frm_data['checkin_time'],
 $frm_data['name'],
 $frm_data['phonenum'],
 $frm_data['address']
-], 'isiisssss');  // Corrected type string
+], 'isiisssss');  
 
     // Create payment link
     $checkoutUrl = createPaymentLink($TXN_AMOUNT, $ORDER_ID);

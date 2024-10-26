@@ -69,7 +69,6 @@ if (isset($_POST['get_all_pools'])) {
 if (isset($_POST['get_pool'])) {
     $frm_data = filteration($_POST);
 
-    // Fetch data from the pools table only
     $res1 = select("SELECT * FROM `pools` WHERE `id`=?", [$frm_data['get_pool']], 'i');
 
     if ($res1) {
@@ -94,7 +93,6 @@ if (isset($_POST['edit_pool'])) {
     $frm_data = filteration($_POST);
     $flag = 0;
 
-    // Corrected SQL query
     $q1 = "UPDATE `pools` SET `name`=?, `description`=?, `price`=? WHERE `id`=?";
     $values = [
         $frm_data['name'],
@@ -103,14 +101,13 @@ if (isset($_POST['edit_pool'])) {
         $frm_data['pool_id']
     ];
 
-    // Check if update was successful
     if (update($q1, $values, 'ssii')) {
         $flag = 1;
     } else {
         $flag = 0;
     }
 
-    echo $flag ? 1 : 0; // Directly echoing the flag value
+    echo $flag ? 1 : 0; 
 }
 
 

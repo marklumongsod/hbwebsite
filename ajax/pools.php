@@ -27,7 +27,6 @@ if(isset($_POST['add_image'])) {
     add_image();
 }
 
-// Function to fetch all pools from the database
 function get_all_pools() {
     global $pdo;
     $query = "SELECT * FROM pools";
@@ -59,7 +58,6 @@ function get_all_pools() {
     echo $result;
 }
 
-// Function to add a new pool to the database
 function add_pool() {
     global $pdo;
     $name = $_POST['name'];
@@ -73,7 +71,6 @@ function add_pool() {
     echo $result ? '1' : '0';
 }
 
-// Function to edit an existing pool
 function edit_pool() {
     global $pdo;
     $id = $_POST['pool_id'];
@@ -88,7 +85,6 @@ function edit_pool() {
     echo $result ? '1' : '0';
 }
 
-// Function to fetch the details of a specific pool for editing
 function get_pool($id) {
     global $pdo;
     $query = "SELECT * FROM pools WHERE id = ?";
@@ -99,7 +95,6 @@ function get_pool($id) {
     echo json_encode(['pooldata' => $pool]);
 }
 
-// Function to toggle the status of a pool
 function toggle_status($id, $current_status) {
     global $pdo;
     $new_status = $current_status == 1 ? 0 : 1;
@@ -110,7 +105,6 @@ function toggle_status($id, $current_status) {
     echo $result ? '1' : '0';
 }
 
-// Function to handle pool image uploads
 function add_image() {
     global $pdo;
 
