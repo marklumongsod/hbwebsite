@@ -1,10 +1,14 @@
 <?php
-  require('inc/essentials.php');
-  require('inc/db_config.php');
-  adminLogin();
+require('inc/essentials.php');
+require('inc/db_config.php');
+// require_once '../check_paymongo_payments.php';
+// updateBookingStatusBulk();
+adminLogin();
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,6 +16,7 @@
   <title>Admin Panel - New Bookings</title>
   <?php require('inc/links.php'); ?>
 </head>
+
 <body class="bg-light">
 
   <?php require('inc/header.php'); ?>
@@ -39,7 +44,7 @@
                     <th scope="col">Action</th>
                   </tr>
                 </thead>
-                <tbody id="table-data">                 
+                <tbody id="table-data">
                 </tbody>
               </table>
             </div>
@@ -60,21 +65,19 @@
       <form id="assign_room_form">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Assign Room</h5>
+            <h5 class="modal-title">Confirm Arrival</h5>
           </div>
           <div class="modal-body">
             <div class="mb-3">
-              <label class="form-label fw-bold">Room Number</label>
-              <input type="text" name="room_no" class="form-control shadow-none" required>
+              <!-- <label class="form-label fw-bold">Room Number</label> -->
+              <!-- <input type="text" name="room_no" class="form-control shadow-none" hidden> -->
             </div>
-            <span class="badge rounded-pill bg-light text-dark mb-3 text-wrap lh-base">
-              Note: Assign Room Number only when user has been arrived!
-            </span>
+              Please confirm the user's arrival by clicking the button below. This action will finalize the booking process, ensuring all details are recorded accurately.
             <input type="hidden" name="booking_id">
           </div>
           <div class="modal-footer">
             <button type="reset" class="btn text-secondary shadow-none" data-bs-dismiss="modal">CANCEL</button>
-            <button type="submit" class="btn custom-bg text-white shadow-none">ASSIGN</button>
+            <button type="submit" class="btn custom-bg text-white shadow-none">YES, CONFIRM</button>
           </div>
         </div>
       </form>
@@ -88,4 +91,5 @@
   <script src="scripts/new_bookings.js"></script>
 
 </body>
+
 </html>

@@ -6,6 +6,7 @@
 *{
   font-family: 'Poppins', sans-serif;
 }
+
 .h-font{
   font-family: 'Merienda', cursive;
 }
@@ -40,4 +41,12 @@ input[type=number] {
   top: 80px;
   right: 25px;
   z-index: 1111;
+}
+
+submit{
+  display: block; /* Make the button a block element */
+  margin: auto; /* Center the button */
+  padding: 10px 20px; /* Button padding */
+  font-size: 16px; /* Button font size */
+  cursor: pointer; /* Pointer cursor on hover */
 }

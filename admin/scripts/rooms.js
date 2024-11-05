@@ -10,29 +10,11 @@ function add_room()
   let data = new FormData();
   data.append('add_room','');
   data.append('name',add_room_form.elements['name'].value);
-  data.append('area',add_room_form.elements['area'].value);
-  data.append('price',add_room_form.elements['price'].value);
-  data.append('quantity',add_room_form.elements['quantity'].value);
-  data.append('adult',add_room_form.elements['adult'].value);
-  data.append('children',add_room_form.elements['children'].value);
-  data.append('desc',add_room_form.elements['desc'].value);
-
-  let features = [];
-  add_room_form.elements['features'].forEach(el =>{
-    if(el.checked){
-      features.push(el.value);
-    }
-  });
-
-  let facilities = [];
-  add_room_form.elements['facilities'].forEach(el =>{
-    if(el.checked){
-      facilities.push(el.value);
-    }
-  });
-
-  data.append('features',JSON.stringify(features));
-  data.append('facilities',JSON.stringify(facilities));
+  data.append('room_no',add_room_form.elements['room_no'].value);
+  data.append('description',add_room_form.elements['description'].value);
+  data.append('rate_3hrs',add_room_form.elements['rate_3hrs'].value);
+  data.append('rate_6hrs',add_room_form.elements['rate_6hrs'].value);
+  data.append('rate_12hrs',add_room_form.elements['rate_12hrs'].value);
 
   let xhr = new XMLHttpRequest();
   xhr.open("POST","ajax/rooms.php",true);
@@ -80,25 +62,12 @@ function edit_details(id)
     let data = JSON.parse(this.responseText);
 
     edit_room_form.elements['name'].value = data.roomdata.name;
-    edit_room_form.elements['area'].value = data.roomdata.area;
-    edit_room_form.elements['price'].value = data.roomdata.price;
-    edit_room_form.elements['quantity'].value = data.roomdata.quantity;
-    edit_room_form.elements['adult'].value = data.roomdata.adult;
-    edit_room_form.elements['children'].value = data.roomdata.children;
-    edit_room_form.elements['desc'].value = data.roomdata.description;
+    edit_room_form.elements['room_no'].value = data.roomdata.room_no;
+    edit_room_form.elements['description'].value = data.roomdata.description;
+    edit_room_form.elements['rate_3hrs'].value = data.roomdata.rate_3hrs;
+    edit_room_form.elements['rate_6hrs'].value = data.roomdata.rate_6hrs;
+    edit_room_form.elements['rate_12hrs'].value = data.roomdata.rate_12hrs;
     edit_room_form.elements['room_id'].value = data.roomdata.id;
-
-    edit_room_form.elements['features'].forEach(el =>{
-      if(data.features.includes(Number(el.value))){
-        el.checked = true;
-      }
-    });
-
-    edit_room_form.elements['facilities'].forEach(el =>{
-      if(data.facilities.includes(Number(el.value))){
-        el.checked = true;
-      }
-    });
   }
 
   xhr.send('get_room='+id);
@@ -115,29 +84,11 @@ function submit_edit_room()
   data.append('edit_room','');
   data.append('room_id',edit_room_form.elements['room_id'].value);
   data.append('name',edit_room_form.elements['name'].value);
-  data.append('area',edit_room_form.elements['area'].value);
-  data.append('price',edit_room_form.elements['price'].value);
-  data.append('quantity',edit_room_form.elements['quantity'].value);
-  data.append('adult',edit_room_form.elements['adult'].value);
-  data.append('children',edit_room_form.elements['children'].value);
-  data.append('desc',edit_room_form.elements['desc'].value);
-
-  let features = [];
-  edit_room_form.elements['features'].forEach(el =>{
-    if(el.checked){
-      features.push(el.value);
-    }
-  });
-
-  let facilities = [];
-  edit_room_form.elements['facilities'].forEach(el =>{
-    if(el.checked){
-      facilities.push(el.value);
-    }
-  });
-
-  data.append('features',JSON.stringify(features));
-  data.append('facilities',JSON.stringify(facilities));
+  data.append('room_no',edit_room_form.elements['room_no'].value);
+  data.append('description',edit_room_form.elements['description'].value);
+  data.append('rate_3hrs',edit_room_form.elements['rate_3hrs'].value);
+  data.append('rate_6hrs',edit_room_form.elements['rate_6hrs'].value);
+  data.append('rate_12hrs',edit_room_form.elements['rate_12hrs'].value);
 
   let xhr = new XMLHttpRequest();
   xhr.open("POST","ajax/rooms.php",true);

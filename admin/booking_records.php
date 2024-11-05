@@ -1,6 +1,8 @@
 <?php
   require('inc/essentials.php');
   require('inc/db_config.php');
+  // require_once '../check_paymongo_payments.php';
+  // updateBookingStatusBulk();
   adminLogin();
 ?>
 <!DOCTYPE html>

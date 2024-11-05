@@ -21,7 +21,6 @@ assign_room_form.addEventListener('submit',function(e){
   e.preventDefault();
   
   let data = new FormData();
-  data.append('room_no',assign_room_form.elements['room_no'].value);
   data.append('booking_id',assign_room_form.elements['booking_id'].value);
   data.append('assign_room','');
 
@@ -34,7 +33,7 @@ assign_room_form.addEventListener('submit',function(e){
     modal.hide();
 
     if(this.responseText==1){
-      alert('success','Room Number Alloted! Booking Finalized!');
+      alert('success','Booked Confirmed!');
       assign_room_form.reset();
       get_bookings();
     }
@@ -65,6 +64,7 @@ function cancel_booking(id)
       }
       else{
         alert('error','Server Down!');
+        get_bookings();
       }
     }
 

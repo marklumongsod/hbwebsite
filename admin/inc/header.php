@@ -1,6 +1,15 @@
 <div class="container-fluid bg-dark text-light p-3 d-flex align-items-center justify-content-between sticky-top">
   <h3 class="mb-0 h-font">VILLA OCAMPO RESORT</h3>
-  <a href="logout.php" class="btn btn-light btn-sm">LOG OUT</a>
+  <div class="position-relative me-3">
+    <!-- <button type="button" class="btn btn-light btn-sm position-relative">
+      <i class="bi bi-bell-fill"></i>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+        3 
+      </span> -->
+    </button>
+    <a href="logout.php" class="btn btn-light btn-sm">LOG OUT</a>
+  </div>
+
 </div>
 
 <div class="col-lg-2 bg-dark border-top border-3 border-secondary" id="dashboard-menu">
@@ -17,7 +26,7 @@
           </li>
           <li class="nav-item">
             <button class="btn text-white px-3 w-100 shadow-none text-start d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#bookingLinks">
-              <span>Bookings</span>
+              <span>Room Bookings</span>
               <span><i class="bi bi-caret-down-fill"></i></span>
             </button>
             <div class="collapse show px-3 small mb-1" id="bookingLinks">
@@ -34,6 +43,24 @@
               </ul>
             </div>
           </li>
+
+          <li class="nav-item">
+            <button class="btn text-white px-3 w-100 shadow-none text-start d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#bookingLinks">
+              <span>Pool Bookings</span>
+              <span><i class="bi bi-caret-down-fill"></i></span>
+            </button>
+            <div class="collapse show px-3 small mb-1" id="bookingLinks">
+              <ul class="nav nav-pills flex-column rounded border border-secondary">
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="new_pool_bookings.php">New Bookings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="booking_pool_records.php">Booking Records</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link text-white" href="users.php">Users</a>
           </li>
@@ -47,10 +74,16 @@
             <a class="nav-link text-white" href="rooms.php">Rooms</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link text-white" href="pools.php">Pools</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link text-white" href="features_facilities.php">Features & Facilities</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="carousel.php">Carousel</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="config_email.php">Email Notification</a>
           </li>
           <li class="nav-item">
             <a class="nav-link text-white" href="settings.php">Settings</a>

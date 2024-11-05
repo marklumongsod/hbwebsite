@@ -120,6 +120,10 @@
         $room_thumb = ROOMS_IMG_PATH.$thumb_res['image'];
       }
 
+     
+      $is_available = $room_data['isAvailable'] == 1;
+      $availability_status = $is_available ? 'Available' : 'Not Available';
+
       $book_btn = "";
 
       if(!$settings_r['shutdown']){
@@ -128,10 +132,15 @@
           $login=1;
         }
 
-        $book_btn = "<button onclick='checkLoginToBook($login,$room_data[id])' class='btn btn-sm w-100 text-white custom-bg shadow-none mb-2'>Book Now</button>";
+        $disabled = $is_available ? '' : 'disabled';
+        $book_btn = "<button onclick='checkLoginToBook($login,$room_data[id])' class='btn btn-sm w-100 text-white custom-bg shadow-none mb-2'  $disabled>Book Now</button>";
       }
 
       // print room card
+
+      
+      $availability_status = $room_data['isAvailable'] == 1 ? 'Available' : 'Not Available';
+      $availability_class = $room_data['isAvailable'] == 1 ? 'bg-primary text-light' : 'bg-danger text-light';
 
       $output.="
         <div class='card mb-4 border-0 shadow'>
@@ -140,27 +149,26 @@
               <img src='$room_thumb' class='img-fluid rounded'>
             </div>
             <div class='col-md-5 px-lg-3 px-md-3 px-0'>
-              <h5 class='mb-3'>$room_data[name]</h5>
-              <div class='features mb-3'>
-                <h6 class='mb-1'>Features</h6>
-                $features_data
-              </div>
-              <div class='facilities mb-3'>
-                <h6 class='mb-1'>Facilities</h6>
-                $facilities_data
-              </div>
+              <h5 class='mb-3'>$room_data[name] r.$room_data[room_no] </h5>
               <div class='guests'>
-                <h6 class='mb-1'>Guests</h6>
+                <h6 class='mb-1'>Description</h6>
                 <span class='badge rounded-pill bg-light text-dark text-wrap'>
-                  $room_data[adult] Adults
-                </span>
-                <span class='badge rounded-pill bg-light text-dark text-wrap'>
-                  $room_data[children] Children
+                  $room_data[description] 
                 </span>
               </div>
+                 <div class='guests mb-4'>
+                    <h6 class='mb-1'>Status</h6>
+                    <span class='badge rounded-pill $availability_class'>
+                        $availability_status
+                    </span>
+                  </div>
             </div>
+            
             <div class='col-md-2 mt-lg-0 mt-md-0 mt-4 text-center'>
-              <h6 class='mb-4'>₱$room_data[price] per night</h6>
+              <h6 class='mb-4'>₱$room_data[rate_3hrs] per 3 Hours</h6>
+              <h6 class='mb-4'>₱$room_data[rate_6hrs] per 6 Hours</h6>
+              <h6 class='mb-4'>₱$room_data[rate_12hrs] per 12 Hours</h6>
+
               $book_btn
               <a href='room_details.php?id=$room_data[id]' class='btn btn-sm w-100 btn-outline-dark shadow-none'>More details</a>
             </div>

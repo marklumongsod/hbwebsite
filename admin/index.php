@@ -1,13 +1,14 @@
 <?php
   require('inc/essentials.php');
   require('inc/db_config.php');
+  // require_once '../check_paymongo_payments.php';
+  // updateBookingStatusBulk();
 
   session_start();
   if((isset($_SESSION['adminLogin']) && $_SESSION['adminLogin']==true)){
     redirect('dashboard.php');
   }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
