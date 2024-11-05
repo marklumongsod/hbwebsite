@@ -26,7 +26,7 @@
           </li>
           <li class="nav-item">
             <button class="btn text-white px-3 w-100 shadow-none text-start d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#bookingLinks">
-              <span>Bookings</span>
+              <span>Room Bookings</span>
               <span><i class="bi bi-caret-down-fill"></i></span>
             </button>
             <div class="collapse show px-3 small mb-1" id="bookingLinks">
@@ -43,6 +43,24 @@
               </ul>
             </div>
           </li>
+
+          <li class="nav-item">
+            <button class="btn text-white px-3 w-100 shadow-none text-start d-flex align-items-center justify-content-between" type="button" data-bs-toggle="collapse" data-bs-target="#bookingLinks">
+              <span>Pool Bookings</span>
+              <span><i class="bi bi-caret-down-fill"></i></span>
+            </button>
+            <div class="collapse show px-3 small mb-1" id="bookingLinks">
+              <ul class="nav nav-pills flex-column rounded border border-secondary">
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="new_pool_bookings.php">New Bookings</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link text-white" href="booking_pool_records.php">Booking Records</a>
+                </li>
+              </ul>
+            </div>
+          </li>
+
           <li class="nav-item">
             <a class="nav-link text-white" href="users.php">Users</a>
           </li>
