@@ -71,7 +71,9 @@
           <td>
             <b>Amount:</b> ₱$data[trans_amt]
             <br>
-            <b>Date:</b> $date
+            <b>Check-in-Date:</b> $data[check_in]<br>
+              <b>Time:</b> ₱$data[check_in_time]
+            <br>
           </td>
         </tr>
       ";
