@@ -49,7 +49,9 @@ if (isset($_POST['get_bookings'])) {
           <td>
             <b>Amount:</b> ₱$data[trans_amt]
             <br>
-            <b>Date:</b> $date
+            <b>Check-in-Date:</b> $data[check_in]<br>
+              <b>Time:</b> ₱$data[check_in_time]
+            <br>
           </td>
           <td>
             <button type='button' onclick='assign_room($data[booking_id])' class='btn text-white btn-sm fw-bold custom-bg shadow-none' data-bs-toggle='modal' data-bs-target='#assign-room'>

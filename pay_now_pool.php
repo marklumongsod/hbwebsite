@@ -37,7 +37,7 @@ if (isset($_POST['pay_now'])) {
         $frm_data['checkin_time'], 
         $ORDER_ID,
         'pending', 
-        $frm_data['quantity'] 
+        0 
     ], 'issssii');
 
     $booking_id = mysqli_insert_id($con);
