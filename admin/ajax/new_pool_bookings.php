@@ -10,9 +10,9 @@ if (isset($_POST['get_bookings'])) {
   $query = "SELECT bo.*, bd.* FROM `booking_order_pool` bo
       INNER JOIN `booking_details_pool` bd ON bo.booking_id = bd.booking_id
       WHERE (bo.order_id LIKE ? OR bd.phonenum LIKE ? OR bd.user_name LIKE ?) 
-      AND (bo.arrival=?) ORDER BY bo.booking_id ASC";
+      AND (bo.booking_status=? AND bo.arrival=?) ORDER BY bo.booking_id ASC";
 
-  $res = select($query, ["%$frm_data[search]%", "%$frm_data[search]%", "%$frm_data[search]%", 0], 'ssss');
+  $res = select($query, ["%$frm_data[search]%", "%$frm_data[search]%", "%$frm_data[search]%", "0", 0], 'sssss');
 
   $i = 1;
   $table_data = "";
@@ -89,29 +89,8 @@ if (isset($_POST['assign_room'])) {
 if (isset($_POST['cancel_booking'])) {
   $frm_data = filteration($_POST);
 
-  $query = "UPDATE `booking_order` SET `booking_status`=?, `refund`=? WHERE `booking_id`=?";
+  $query = "UPDATE `booking_order_pool` SET `booking_status`=?, `refund`=? WHERE `booking_id`=?";
   $values = ['cancelled', 0, $frm_data['booking_id']];
   $res = update($query, $values, 'sii');
-
-  if ($res) {
-    $fetch_room_query = "SELECT `room_id` FROM `booking_order` WHERE `booking_id`=?";
-    $room_data = select($fetch_room_query, [$frm_data['booking_id']], 'i');
-
-    if ($room_data) {
-      $room_id = $room_data[0]['room_id'];
-
-      $update_room_query = "UPDATE `room` SET `isAvailable`=? WHERE `id`=?";
-      $room_update_res = update($update_room_query, [1, $room_id], 'ii');
-
-      if ($room_update_res) {
-        echo "Room availability updated successfully.";
-      } else {
-        echo "Failed to update room availability.";
-      }
-    } else {
-      echo "Room not found for the given booking.";
-    }
-  } else {
-    echo "Failed to cancel the booking.";
-  }
+  
 }
